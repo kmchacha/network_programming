@@ -47,27 +47,38 @@ int main(int argc, char *argv[])
 		read_first[i] = 1;
 
 	// TODO: init descriptor 
-		
+	FD_ZERO(&reads);
+	FD_SET(serv_sock, &reads);
+	fd_max = serv_sock;
 
 	while (1)
 	{
 		cpy_reads = reads;
 
 		// TODO: set timeer
+		timeout.tv_sec = 5;
+		timeout.tv_usec = 5000;
 
 		// TODO: select()
-		
+		if((fd_num = select(fd_max+1, &cpy_reads, 0, 0, &timeout)) == -1)
+			break;
+
 		if (fd_num == 0)
 			continue; 
 
 		for (i = 0; i < fd_max + 1; i++)
 		{
-			if ()// TODO: check file descriptor
+			if (FD_ISSET(i, &cpy_reads))// TODO: check file descriptor
 			{
 				if (i == serv_sock)		// connection request! 
 				{
 					// TODO: when connecion request 
-					
+					adr_sz = sizeof(clnt_adr);
+					clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &adr_sz);
+
+					FD_SET(clnt_sock, &reads);
+					if(fd_max < clnt_sock)
+						fd_max = clnt_sock;
 
 					printf("Connected client IP(%d): %s \n", i, inet_ntoa(clnt_adr.sin_addr)); 
 					read_first[i] = 1;
@@ -80,22 +91,30 @@ int main(int argc, char *argv[])
 					printf("Received File name:%s \n", file_name[i]);
 					read_first[i] = 0;
 				}
-				else					// read file data 
+				else					// write file data 
 				{
-					// TODO: read file data 
-
+					// TODO: receive file data from socket
+					read_cnt = read(i, buf, 1);
+					
 					if (read_cnt == 0)	// close request!
 					{
 						printf("Complete!: %s \n", file_name[i]);
 
 						// TODO: when connection close (send "Thank you" message to client)
-						
+						write(i, "Thank you", BUF_SIZE); 	
+						FD_CLR(i, &reads);
+						close(i);
+						fclose(fp[i]);
+
 						printf("Closed client: %d \n", i);
 						read_first[i] = 1;
 					}
 					else 
 					{
-						// TODO: write data into file
+						// TODO: write data into file		
+						fwrite(buf, read_cnt, 1 , fp[i]);
+						fflush(fp[i]);
+						
 					}
 				}
 			}

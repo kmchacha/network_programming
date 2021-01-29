@@ -36,8 +36,10 @@ int main(int argc, char *argv[])
 	write(sock, buf, strlen(buf));
 	printf("%s\n", buf);
 
+	socklen_t adr_sz = sizeof(from_adr);
 	// TODO: Receive file size
-	
+	recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr*)&from_adr, &adr_sz);
+	file_size = atoi(buf);
 	printf("File size=%d bytes\n", file_size);
 	
 	memset(buf, 0, BUF_SIZE);
@@ -46,6 +48,14 @@ int main(int argc, char *argv[])
 	while (recv_size < file_size)
 	{
 		// TODO: Receive file data 
+		read_size = read(sock, buf, sizeof(buf));
+		recv_size += read_size;
+		if(read_size < BUF_SIZE)
+		{
+			fwrite(buf, read_size, 1, fp);
+			break;
+		}
+		fwrite(buf, read_size, 1, fp);
 	}
 	
 	puts("Received file data");

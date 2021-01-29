@@ -12,8 +12,9 @@ int main(int argc, char *argv[])
 {
 	int serv_sock, clnt_sock;
 	char message[BUF_SIZE];
-	int str_len;
-	
+	int str_len=0;
+	int idx=0, read_len=0;
+
 	struct sockaddr_in serv_adr;
 	struct sockaddr_in clnt_adr;
 	socklen_t clnt_adr_sz;
@@ -24,6 +25,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// TODO: socket()
+	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
 
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family = AF_INET;
@@ -31,21 +33,34 @@ int main(int argc, char *argv[])
 	serv_adr.sin_port = htons(atoi(argv[1]));
 
 	// TODO: bind()
-		
+	if(bind(serv_sock, (struct sockaddr*) &serv_adr, sizeof(serv_adr))==-1)
+		error_handling("bind() error");
+
 	printf("Server Listen...\n");
 
 	// TODO: listen()
-	
+	if(listen(serv_sock, 5) ==-1)
+		error_handling("listen() error");
+
 	clnt_adr_sz = sizeof(clnt_adr);
- 	
  	// TODO: accept()
-	
+	clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
+	if(clnt_sock == -1)
+		error_handling("accept() error");
+
 	puts("Client is connected!");
 	
 	// TODO: 2. read message from client
-	printf("Client's message: %s", message);
-
 	// TODO: 3. write message to client 
+	while(read_len = read(clnt_sock, &message[idx++], BUF_SIZE))
+	{
+		printf("%d\n", read_len);
+		message[read_len] = 0;
+		str_len += read_len;
+			
+		write(clnt_sock, message, sizeof(message));
+		printf("Client's message: %s", message);
+	}
 
 	close(clnt_sock);
 	close(serv_sock);

@@ -131,6 +131,8 @@ void send_data(FILE* fp, char* ct, char* file_name)
 
 	// TODO: read file data from the file and send to the client 
 	// Hint: use fread() and fwrite() 
+	while((fread(buf, 1, BUF_SIZE, send_file)) != 0)
+		fwrite(buf, 1 , BUF_SIZE, fp);
 
 	fflush(fp);
 	fclose(fp);
@@ -146,8 +148,8 @@ char* content_type(char* file)
 	
 	if (!strcmp(extension, "html") || !strcmp(extension, "htm")) 
 		return "text/html";
-	else if ()// TODO: check the extension of jpg --> return "image/jpeg"
-		return ;
+	else if (!strcmp(extension, "jpg")// TODO: check the extension of jpg --> return "image/jpeg"
+		return "image/jpeg";
 	else
 		return "text/plain";
 }

@@ -51,9 +51,25 @@ void read_routine(int sock, char *buf)
 	fp = fopen("echoclntmsg.txt", "w");
 	
 	// TODO: create pipe & fork 
+	pipe(fds);
+	pid2 = fork();
 
 	// TODO: store received echo message 
+	if(pid2 == 0) // child
+	{
+		char message[BUF_SIZE];	
+		int i, len;
 
+		for(i=0;i<10;i++){
+			len = read(fds[0], message, BUF_SIZE);
+			fwrite(message, len , 1, fp);
+			fflush(fp);
+		}
+		fclose(fp);
+		return;
+	}
+
+	// parent
 	while (1)
 	{
 		int str_len = read(sock, buf, BUF_SIZE);

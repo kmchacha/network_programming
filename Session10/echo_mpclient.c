@@ -31,10 +31,19 @@ int main(int argc, char *argv[])
 		error_handling("connect() error!");
 	
 	// TODO: fork
-
+	pid = fork();
 	// TODO: parent process calls read routine and 
 	//       child process calls write routine
-
+	if(pid == 0) // child
+	{
+		//shutdown(sock, SHUT_RD);	
+		write_routine(sock, buf);
+	}
+	else // parent
+	{
+		//shutdown(sock, SHUT_WR);
+		read_routine(sock, buf);
+	}
 
 	close(sock);
 	return 0;
@@ -42,9 +51,15 @@ int main(int argc, char *argv[])
 
 void read_routine(int sock, char *buf)
 {
+	int str_len;
 	while (1)
 	{
 		// TODO: Read message from the echo server 
+		str_len = read(sock, buf, BUF_SIZE);
+		if(str_len <= 0) break;
+
+		printf("Message from server : %s\n", buf);
+		
 	}
 }
 void write_routine(int sock, char *buf)
@@ -53,6 +68,14 @@ void write_routine(int sock, char *buf)
 	{
 		fputs("Input message(Q to quit): ", stdout);
 		// TODO: Write message to the echo server
+		fgets(buf, BUF_SIZE-2, stdin);
+
+		if(!strcmp(buf, "q\n") || !strcmp(buf, "Q\n")){
+			shutdown(sock, SHUT_WR);
+			break;
+		}
+		buf[BUF_SIZE-1]=0;
+		write(sock, buf, BUF_SIZE);
 	}
 }
 void error_handling(char *message)

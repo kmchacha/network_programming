@@ -41,10 +41,25 @@ int main(int argc, char *argv[])
 	printf("Client's message: %s\n", buf);
 
 	// TODO: Send file size to client 
+	fseek(fp, 0, SEEK_END);
+	file_size = (int)(ftell(fp));
+	fseek(fp, 0 ,SEEK_SET); // ******* to know a file size ********
+	
+	sprintf(buf, "%d", file_size);
 
+	sendto(serv_sock, buf, sizeof(buf), 0, (struct sockaddr*)&clnt_adr, clnt_adr_sz);
+	
 	while(1)
 	{
 		// TODO: Send file data to client 
+		read_cnt = fread((void*)buf, 1, BUF_SIZE, fp);
+		if(read_cnt < BUF_SIZE)
+		{
+			sendto(serv_sock, buf, read_cnt, 0, (struct sockaddr*)&clnt_adr, clnt_adr_sz);
+			break;
+		}
+		sendto(serv_sock, buf, read_cnt, 0, (struct sockaddr*)&clnt_adr, clnt_adr_sz);
+		printf("*");
 	}
 	
 	recvfrom(serv_sock, buf, BUF_SIZE, 0, 

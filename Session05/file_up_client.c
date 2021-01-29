@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	char file_name[BUF_SIZE];
 	char buf[BUF_SIZE];
 	int read_cnt;
-	int read_size;
+	int read_size=0;
 	struct sockaddr_in serv_adr;
 	if (argc != 4) {
 		printf("Usage: %s <IP> <port> <file name> \n", argv[0]);
@@ -35,17 +35,30 @@ int main(int argc, char *argv[])
 	connect(sd, (struct sockaddr*)&serv_adr, sizeof(serv_adr));
 	
 	// TODO: Send file name to server 
-	
+	write(sd, file_name, BUF_SIZE);
 
 	// TODO: Send file data (Hint: file_server.c)
-	
+	while(1)
+	{
+		read_cnt = fread((void*)buf, 1, BUF_SIZE, fp);
+		if(read_cnt < BUF_SIZE)
+		{
+			write(sd, buf, read_cnt);
+			read_size += read_cnt;
+			break;
+		}
+		read_size += BUF_SIZE;
+		write(sd, buf, BUF_SIZE);
+	}
 
-	printf("Recv %d bytes \n", read_size);
+	printf("Send %d bytes \n", read_size);
 
 	// TODO: shutdown 
+	shutdown(sd, SHUT_WR);
 
 	// TODO: read complete message from server 
-	
+	read(sd, buf, BUF_SIZE);
+
 	printf("Message from server: %s \n", buf);
 
 	fclose(fp);

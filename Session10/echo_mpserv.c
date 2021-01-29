@@ -55,17 +55,19 @@ int main(int argc, char *argv[])
 			close(clnt_sock);
 			continue;
 		}
-		if (pid == 0)
+		if (pid == 0) // child -> echo
 		{
 			close(serv_sock);
 			while ((str_len = read(clnt_sock, buf, BUF_SIZE)) != 0)
+			{
+				printf("Received from client : %s\n",buf);
 				write(clnt_sock, buf, str_len);
-			
+			}	
 			close(clnt_sock);
 			puts("client disconnected...");
 			return 0;
 		}
-		else
+		else // parent
 			close(clnt_sock);
 	}
 	close(serv_sock);

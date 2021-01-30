@@ -1,6 +1,6 @@
 ## Multicast란
 
-<img src="/Multicast.svg" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="Multicast"></img><br/>
+<img src="/multicast.png" width="440px" height="300px" title="px(픽셀) 크기 설정" alt="Multicast"></img><br/>
 
 1. multicast는 일반적으로 1:n 통신을 하는 기술이다
 2. 한 번의 송신으로 메시지나 정보를 목표한 컴퓨터들(그룹)에 동시에 전송하는 것을 말한다
@@ -16,7 +16,7 @@ multicast 전송이 일반적인 유니캐스트 인터넷 응용 분야와 다�
 
 ## broadcast란
 
-<img src="/Broadcast.svg" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="Broadcast"></img><br/>
+<img src="/broadcast.png" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="Broadcast"></img><br/>
 
 1. broadcastting이란 하나의 서브넷 안에서의 1:All 통신 방식이다. (MAC주소를 알아내기 위해서 동작하는 ARP가 바로 broadcast 이다) 
 2. 한 번의 송신으로 메시지나 정보를 같은 서브넷에 동시에 전송하는 것을 말한다 (패킷은 하나가 전달되고 라우터에서 각자 네트워크에 뿌려주는 느낌으로 이해하였다)
@@ -39,4 +39,7 @@ ARP는 자신과 데이터 통신을 하기 위한 다른 노드의 맥 주소�
 
 ##### 실습2)
     news_receiver_brd.c - news_sender_brd.c
-    -> 
+    -> 실습1과 동일한 방식
+
+    ./news_sender_brd 255.255.255.255 50000
+    ./news_receiver_brd 50000

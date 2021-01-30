@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	 }
   
-	recv_sock = socket(PF_INET, SOCK_DGRAM, 0);
+	recv_sock = socket(PF_INET, SOCK_DGRAM, 0);	// UDP
 	
 	memset(&adr, 0, sizeof(adr));
 	adr.sin_family = AF_INET;

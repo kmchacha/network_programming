@@ -28,15 +28,19 @@ int main(int argc, char *argv[])
 	mul_adr.sin_addr.s_addr = inet_addr(argv[1]);  // Multicast IP
 	mul_adr.sin_port = htons(atoi(argv[2]));       // Multicast Port
 	
-	setsockopt(send_sock, IPPROTO_IP, 
-		IP_MULTICAST_TTL, (void*)&time_live, sizeof(time_live));
+	setsockopt(send_sock, IPPROTO_IP, 	// Specify TTL for multicasts. If no specifed, default value is 1.
+		IP_MULTICAST_TTL, (void*)&time_live, sizeof(time_live));	
 	
-	if((fp = fopen("news.txt", "r")) == NULL)
-		error_handling("fopen() error");
+	//if((fp = fopen("news.txt", "r")) == NULL)
+	//	error_handling("fopen() error");
 
-	while (!feof(fp))   /* Broadcasting */
+	while (1)   /* Broadcasting */
 	{
-		fgets(buf, BUF_SIZE, fp);
+		fputs("Input message(Q to quit): ", stdout); // receive from user
+		fgets(buf, BUF_SIZE, stdin);
+		if (!strcmp(buf,"q\n") || !strcmp(buf,"Q\n"))
+			break;
+			
 		sendto(send_sock, buf, strlen(buf), 
 			0, (struct sockaddr*)&mul_adr, sizeof(mul_adr));
 		sleep(2);

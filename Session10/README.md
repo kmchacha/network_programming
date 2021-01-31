@@ -11,11 +11,11 @@ sigaction, signal을 통하여서 설정이 가능하다 (signal 함수는 유�
 
 
 #### Sigaction
-1. sigaction() 시스템 호출은 특정 시그널(:12)의 수신에 대해서 취할 액션을 설정하거나 변경하기 위해서 사용된다.
-2. signum는 시그널을 명시한다. SIGKILL(:12)과 SIGSTOP(:12)를 제외한 모든 시그널이 타당한 시그널이 될 수 있다.
+1. sigaction() 시스템 호출은 특정 시그널의 수신에 대해서 취할 액션을 설정하거나 변경하기 위해서 사용된다.
+2. signum는 시그널을 명시한다. SIGKILL과 SIGSTOP를 제외한 모든 시그널이 타당한 시그널이 될 수 있다.
 3. 만약 act가 null이 아니라면 signum번호를 가지는 시그널에 대해서 act함수가 설치된다. 만약 oldact가 null이 아니라면 이전의 액션은 oldact에 저장된다.
 
-<img src="sigaction.png" width="640px" height="560px" title="px(픽셀) 크기 설정" alt="sigaction"></img><br/>   
+<img src="sigaction.png" width="512px" height="207px" title="px(픽셀) 크기 설정" alt="sigaction"></img><br/>   
 
 ###### sa_handler
 signum번호를 가지는 시그널이 발생했을 때 실행된 함수를 설치한다. 함수외에도 SIG_DFL과 SIG_IGN을 지정할 수 있다. 전자는 시그널에 대한 기본행동을 후자는 시그널을 무시하기 위해서 사용한다.

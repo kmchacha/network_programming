@@ -26,10 +26,13 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	act.sa_handler = read_childproc;
-	sigemptyset(&act.sa_mask);
-	act.sa_flags = 0;
+	// sigaction 설정
+	act.sa_handler = read_childproc;	// 시그널이 발생하면 부를 함수 (함수 포인터)
+	sigemptyset(&act.sa_mask);	// set을 클리어
+	act.sa_flags = 0;	// 기본적으로 0으로 세팅
 	state = sigaction(SIGCHLD, &act, 0);
+
+
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family = AF_INET;

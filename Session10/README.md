@@ -10,7 +10,7 @@ signal 이란 말 그대로 event가 발생하면 운영체제가 프로세스�
 sigaction, signal을 통하여서 설정이 가능하다 (signal 함수는 유닉스 계열의 운영체제 별로 동작방식에 있어서 차이를 보일 수 있지만, sigaction 함수는 차이즐 보이지 않는다)
 
 
-#### Sigaction
+### Sigaction
 1. sigaction() 시스템 호출은 특정 시그널의 수신에 대해서 취할 액션을 설정하거나 변경하기 위해서 사용된다.
 2. signum는 시그널을 명시한다. SIGKILL과 SIGSTOP를 제외한 모든 시그널이 타당한 시그널이 될 수 있다.
 3. 만약 act가 null이 아니라면 signum번호를 가지는 시그널에 대해서 act함수가 설치된다. 만약 oldact가 null이 아니라면 이전의 액션은 oldact에 저장된다.

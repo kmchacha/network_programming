@@ -20,5 +20,6 @@ int main(int argc, char *argv[])
 		printf("Child Proc: [%d, %d] \n", gval, lval);
 	else
 		printf("Parent Proc: [%d, %d] \n", gval, lval);
+	
 	return 0;
 }

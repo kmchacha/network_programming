@@ -49,6 +49,11 @@ Multi access server의 종류
 4. 공통변수에 대한 임계구역문제(critical section)문제를 잘 다루어 주어야한다
 
 
+
+
+
+
+
 <img src="fork.png" width="450" height="60px" title="px(픽셀) 크기 설정" alt="fork"></img><br/>
 fork.c 에서는 fork 함수를 호출했을 때 각 변수가, 즉 메모리가 공유되는지를 알아보았다. 분리된 메모리 구조를 지님을 알 수 있다.
 

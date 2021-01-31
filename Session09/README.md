@@ -46,14 +46,14 @@ Multi access server의 종류
 1. 멀티 프로세스와 마찬가지로 동시 실행이 가능하다
 2. 서버에서 클라이언트가 접속할 때마다 스레드를 하나 만들어주는 방식
 3. 쓰레드는 light weight proces로 가볍고, 일부 메모리를 공유하므로 스레드간 통신이 편리하다
-4. 공통변수에 대한 임계구역문제(critical section)문제를 잘 다루어 주어야한다
+4. 공통변수에 대한 임계구역문제(critical section)문제를 잘 다루어 주어야한다    
 
 
 
 
 
 
-
+#### <결과>
 <img src="fork.png" width="450" height="60px" title="px(픽셀) 크기 설정" alt="fork"></img><br/>
 fork.c 에서는 fork 함수를 호출했을 때 각 변수가, 즉 메모리가 공유되는지를 알아보았다. 분리된 메모리 구조를 지님을 알 수 있다.
 

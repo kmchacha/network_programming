@@ -29,14 +29,21 @@ int main(int argc, char *argv[])
 	
 	setsockopt(send_sock, SOL_SOCKET, 
 		SO_BROADCAST, (void*)&so_brd, sizeof(so_brd));	
-	if ((fp = fopen("news.txt", "r")) == NULL)
-		error_handling("fopen() error");
+	// SO_BROADCAST : enable one disable of the process to send broadcast message(only datagram socket)
+	
+	//if ((fp = fopen("news.txt", "r")) == NULL)
+	//	error_handling("fopen() error");
 
-	while (!feof(fp))
+	while (1)
 	{
-		fgets(buf, BUF_SIZE, fp);
+		fputs("Input message(Q to quit): ", stdout); // receive from user
+		fgets(buf, BUF_SIZE, stdin);
+		if (!strcmp(buf,"q\n") || !strcmp(buf,"Q\n"))
+			break;
+
 		sendto(send_sock, buf, strlen(buf), 
 			0, (struct sockaddr*)&broad_adr, sizeof(broad_adr));
+
 		sleep(2);
 	}
 
